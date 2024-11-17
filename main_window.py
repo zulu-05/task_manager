@@ -6,9 +6,16 @@ from PySide6.QtWidgets import (
         QPushButton,
         QHBoxLayout
         )
+from PySide6.QtWidgets import (
+        QListWidget,
+        QInputDialog,
+        QMessageBox,
+        QPushButton
+        )
 from PySide6.QtCore import Qt, QDate
 from PySide6.QtGui import QFont, QIcon
 import os
+import json
 
 
 class MainWindow(QMainWindow):
@@ -46,7 +53,6 @@ class MainWindow(QMainWindow):
         self.prev_button.clicked.connect(self.show_previous_day)
         nav_layout.addWidget(self.prev_button)
 
-
         self.next_button = QPushButton(">")
         self.next_button.setFont(QFont("Arial", 14))
         self.next_button.setFixedSize(50, 50)
@@ -55,6 +61,19 @@ class MainWindow(QMainWindow):
 
         main_layout.addLayout(nav_layout)
 
+        self.events_list = QListWidget()
+        self.events_list.setFixedHeight(150)
+        self.events_list.itemDoubleClicked.connect(self.view_event_details)
+        main_layout.addWidget(self.events_list)
+
+        self.add_event_button = QPushButton("Add Event")
+        self.add_event_button.clicked.connect(self.add_event)
+        main_layout.addWidget(self.add_event_button)
+
+        self.events = {}
+
+        self.load_events()
+
         self.update_display()
 
 
@@ -62,6 +81,13 @@ class MainWindow(QMainWindow):
 
         formatted_date = self.current_date.toString("dddd, MMMM d, yyyy")
         self.title_label.setText(formatted_date)
+
+        self.events_list.clear()
+        if self.current_date in self.events:
+            for event in self.events[self.current_date]:
+                self.events_list.addItem(event)
+        else:
+            self.events_list.addItem("No Events")
 
         self.day_display.setText("No Content")
 
@@ -77,3 +103,57 @@ class MainWindow(QMainWindow):
         self.current_date = self.current_date.addDays(1)
         self.update_display()
 
+
+    def add_event(self):
+
+        event_text, ok = QInputDialog.getText(self, "Add Event", "Enter event description: ")
+
+        if ok and event_text:
+            if self.current_date in self.events:
+                self.events[self.current_date].append(event_text)
+            else:
+                self.events[self.current_date] = [event_text]
+
+            self.update_display()
+
+
+    def view_event_details(self, item):
+
+        event_text = item.text()
+        if event_text != "No Events":
+            QMessageBox.information(self, "Event Details", event_text)
+
+
+    def load_events(self):
+
+        if os.path.exists("events.json"):
+
+            with open("events.json", "r") as f:
+
+                data = json.load(f)
+
+                for date_str, events in data.items():
+
+                    date = QDate.fromString(date_str, "yyyy-MM-dd")
+                    
+                    if date.isValid():
+                        self.events[date] = events
+
+
+    def save_events(self):
+
+        data = {}
+
+        for date, events in self.events.items():
+            
+            date_str = date.toString("yyyy-MM-dd")
+            data[date_str] = events
+
+        with open("events.json", "w") as f:
+            json.dump(data, f, indent=4)
+
+
+    def closeEvent(self, event):
+
+        self.save_events()
+        event.accept()
