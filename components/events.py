@@ -4,7 +4,7 @@ import json
 import os
 
 
-class EventsManager:
+class Events:
 
     def __init__(self, main_window):
 
