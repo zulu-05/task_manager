@@ -1,12 +1,8 @@
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget,
-    QGraphicsView, QGraphicsScene, QGraphicsTextItem,
-    QVBoxLayout, QHBoxLayout,
-    QPushButton, QLabel
+    QGraphicsView, QGraphicsScene, QGraphicsTextItem
     )
 from PySide6.QtGui import QPen, QFont
-from PySide6.QtCore import Qt, QTimer, QTime, QDate, QDateTime, QPropertyAnimation
-from digital_clock import DigitalClock
+from PySide6.QtCore import Qt, QDate
 
 
 class CalendarView(QGraphicsView):
@@ -124,17 +120,17 @@ class CalendarView(QGraphicsView):
             self.scene.addLine(0, y, days * day_width, y, pen)
 
 
-    def key_press_event(self, event):
+    def keyPressEvent(self, event):
 
         if event.key() == Qt.Key_Right:
             self.horizontalScrollBar().setValue(self.horizontalScrollBar().value() + 100)
         elif event.key() == Qt.Key_Left:
             self.horizontalScrollBar().setValue(self.horizontalScrollBar().value() - 100)
         else:
-            super().key_press_event(event)
+            super().keyPressEvent(event)
 
 
-    def wheel_event(self, event):
+    def wheelEvent(self, event):
 
         zoom_in_factor = 1.25
         zoom_out_factor = 1 / zoom_in_factor

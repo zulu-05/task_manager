@@ -1,10 +1,10 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow
-from calendar_view import CalendarView
+from PySide6.QtWidgets import QApplication
+from application_window import ApplicationWindow
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = CalendarView()
+    window = ApplicationWindow()
     window.show()
     sys.exit(app.exec())

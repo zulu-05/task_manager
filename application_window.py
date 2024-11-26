@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QPushButton,
-    QHBoxLayout
+    QMainWindow, QWidget,
+    QVBoxLayout, QHBoxLayout,
+    QPushButton, QLabel
     )
+from PySide6.QtCore import Qt, QDate, QPropertyAnimation
 from calendar_view import CalendarView
 from digital_clock import DigitalClock
 
@@ -40,7 +40,6 @@ class ApplicationWindow(QMainWindow):
 
         self.digital_clock = DigitalClock(format='HH:mm:ss.zzz')
         self.digital_clock.setStyleSheet("font-size: 16px; color: blue;")
-        main_layout.setAlignment(self.digital_clock, Qt.AlignTop | Qt.AlignLeft)
 
         self.date_range_label = QLabel()
         self.date_range_label.setAlignment(Qt.AlignCenter)
