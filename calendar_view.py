@@ -39,11 +39,11 @@ class CalendarView(QGraphicsView):
 
 
     def init_grid(self):
-    """
-    Clear the scene and redraw the calendar grid based on the current view mode and date.
+        """
+        Clear the scene and redraw the calendar grid based on the current view mode and date.
 
-    Determines the number of days and the interval hours based on 'view_mode' then calls 'draw_grid' to render the layout.
-    """
+        Determines the number of days and the interval hours based on 'view_mode' then calls 'draw_grid' to render the layout.
+        """
 
         self.scene.clear()
 
@@ -144,7 +144,8 @@ class CalendarView(QGraphicsView):
         """
 
         if self.view_mode == 'day':
-
+            
+            label_text = ''
             pass
 
         elif self.view_mode == 'week':
@@ -158,6 +159,7 @@ class CalendarView(QGraphicsView):
 
         else:
 
+            label_text = ''
             return
 
         label = QGraphicsTextItem(label_text)
