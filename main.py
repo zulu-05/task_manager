@@ -1,3 +1,7 @@
+"""
+Entry point for the Task Manager application.
+"""
+
 import sys
 from PySide6.QtWidgets import QApplication
 from application_window import ApplicationWindow
