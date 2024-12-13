@@ -196,7 +196,10 @@ class ApplicationWindow(QMainWindow):
             view_mode (str): The newly selected view mode.
         """
 
-        self.calendar_view.update_view(view_mode)
+        self.calendar_view.view_mode = view_mode
+        self.calendar_view.current_date = QDate.currentDate()
+        self.calendar_view.init_grid()
+
         start_rect = self.calendar_view.geometry()
         end_rect = start_rect.adjusted(0, 0, -start_rect.width() * 0.05, -start_rect.height() * 0.05)
         self.animate_calendar_view(start_rect, end_rect)
